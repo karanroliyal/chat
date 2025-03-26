@@ -1,0 +1,16 @@
+.layout-container{
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .main-content{
+        display: flex;
+        height: calc( 100vh - 65px );
+    }
+}
+
+.sidebar{
+    overflow-y: auto;
+}

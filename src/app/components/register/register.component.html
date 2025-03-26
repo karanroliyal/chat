@@ -1,0 +1,69 @@
+<div class="row mx-0 vh-100 ">
+
+    <div class="col-12 col-md-6 d-flex align-items-center">
+
+        <img src="../../../assets/register.jpg" width="100%" alt="login-page">
+
+    </div>
+    <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center bg-primary text-white">
+
+        <form [formGroup]="registrationForm" class="w-50" (submit)="registration()" enctype="multipart/form-data">
+            <img src="../../../assets/logo.png" width="40px" class="mb-3" alt="logo">
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text ">Name</span>
+                    <input type="text" id="nameId" formControlName="name" maxlength="30"
+                        class="form-control form-control-sm">
+                </div>
+                <app-form-validation [FormGroup]="registrationForm" showName="Name" minlength="3" maxlength="30" fieldName="name" />
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text ">Email</span>
+                    <input type="text" id="emailId" formControlName="email" maxlength="40"
+                        class="form-control form-control-sm">
+                    </div>
+                    <app-form-validation [FormGroup]="registrationForm" showName="Email" fieldName="email" />
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text ">Phone</span>
+                    <input type="text" id="phoneId" formControlName="phone" maxlength="10"
+                        class="form-control form-control-sm">
+                </div>
+                <app-form-validation [FormGroup]="registrationForm" showName="Phone" minlength="10" maxlength="10"
+                    fieldName="phone" />
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <span class="input-group-text ">Password</span>
+                    <input type="password" id="passwordId" formControlName="password" maxlength="15"
+                        class="form-control form-control-sm">
+                </div>
+                <app-form-validation [FormGroup]="registrationForm" showName="Password" minlength="8" maxlength="15"
+                    fieldName="password" />
+            </div>
+
+            <div class="mb-3">
+                <div class="input-group">
+                    <input type="file" id="profileId" (change)="fileUplaod($event)" formControlName="profile"
+                    class="form-control form-control">
+                    <label class="input-group-text" for="inputGroupFile01">Profile</label>
+                </div>
+                <app-form-validation [FormGroup]="registrationForm" showName="Image" fieldName="profile" />
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-warning btn-sm">Register</button>
+            </div>
+
+            Already have account? <a class="text-warning" routerLink="/login">Login</a>
+        </form>
+
+    </div>
+
+
+</div>

@@ -1,0 +1,19 @@
+@if(FormGroup.get(fieldName).touched){
+
+    @if(FormGroup.get(fieldName).hasError('required')){
+        <small class="text-danger">{{showName}} is required</small>
+    }
+    @else if(FormGroup.get(fieldName).hasError('minlength')){
+        <small class="text-danger">{{showName}} has min {{minlength}} length</small>
+    }
+    @else if(FormGroup.get(fieldName).hasError('maxlength')){
+        <small class="text-danger">{{showName}} has max {{maxlength}} length</small>
+    }
+    @else if(FormGroup.get(fieldName).hasError('pattern')){
+        <small class="text-danger">{{showName}} is Invalid</small>
+    }
+    @else if(FormGroup.get(fieldName).hasError('email')){
+        <small class="text-danger">{{showName}} is Invalid</small>
+    }
+
+}

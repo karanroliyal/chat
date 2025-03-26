@@ -1,0 +1,6 @@
+.user-box-container{
+    height: calc( 100vh - 65px );
+}
+.user-box-wrapper{
+    overflow-y: auto;
+}
