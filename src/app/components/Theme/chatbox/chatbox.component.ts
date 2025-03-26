@@ -20,6 +20,7 @@ export class ChatboxComponent implements OnInit{
       console.log('Received from server:', data);
       this.messages.push({text:data , isMine:false})
     })
+    
   }
 
   sendMessage(message:string){

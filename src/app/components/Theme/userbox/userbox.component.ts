@@ -4,8 +4,7 @@ import { OnInit } from '@angular/core';
 import { SocketService } from '../../../services/socket.service';
 
 interface user{
-  name: string,
-  profile:string
+  userId: string,
 }
 
 @Component({
@@ -20,26 +19,21 @@ export class UserboxComponent implements OnInit{
 
   constructor(private GS: globalRouting , private socket: SocketService){}
 
-  users: user[] = [
-    {
-      name : 'karan rawat',
-      profile : '../assets/user.png',
-    }
-  ]
+  users: user[] = [{userId:''}]
 
   ngOnInit(): void {
-    this.getUserData();
     this.socket.connect();
+    // this.socket.socket.on('user-joined' , (data:string)=>{
+    //   this.users.unshift({userId:data})
+    // })
+    this.socket.socket.on('connected-users', (users: string[]) => {
+      users.forEach((ele)=>{
+        this.users.push({userId:ele})
+      })
+    });
+    console.log(this.users)
   }
 
 
-
-  getUserData(){
-
-    this.GS.api('user-data' , '' , '' ).subscribe((res:any)=>{
-      this.users = res;
-    })
-
-  }
 
 }

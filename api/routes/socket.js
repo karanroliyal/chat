@@ -20,12 +20,24 @@ module.exports = createRouter((router) => {
         res.status(201).json({ name: 'karan rawat' });
     })
 
+    // Track connected users
+    const connectedUsers = {};
+
     io.on('connection', (socket) => {
         console.log('user connected', socket.id);
-        socket.broadcast.emit('user-joined',socket.id)
+        // Add new user to the list
+        connectedUsers[socket.id] = `User-${socket.id.slice(-4)}`;
+
+        // Notify existing users about the new user
+        socket.broadcast.emit('user-joined', `${connectedUsers[socket.id]} joined the chat`);
+
+        // Send the list of connected users to the newly joined user
+        socket.emit('connected-users', Object.values(connectedUsers));
+
         socket.on('disconnect', function () {
             console.log('user disconnected', socket.id);
         });
+        
         socket.on('message', (msg) => {
             console.log('user sended this message : ', msg)
             socket.broadcast.emit('message', msg);

@@ -8,8 +8,7 @@
 
         @for (user of users; track $index) {
             <div class="pt-2 pb-2 px-2 rounded d-flex border align-items-center mb-2">
-                <img src='http://localhost:3000/images/{{user.profile}}' alt="user profile" width="12%">
-                <h6 class="mx-2 mb-0">{{user.name}}</h6>
+                <h6 class="mx-2 mb-0">{{$index}} {{user.userId}}</h6>
             </div>
         }
 

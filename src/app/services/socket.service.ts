@@ -9,7 +9,7 @@ import { io, Socket } from 'socket.io-client';
 export class SocketService {
 
 
-  private socket!: Socket;
+  public socket!: Socket;
 
   constructor(){
     // this.connect()
@@ -21,6 +21,16 @@ export class SocketService {
       path: '/sock' // Use custom path defined on the backend
     });
     this.socket.on('connect', () => console.log('Connected to WebSocket!'));
+
+    // Handle the list of connected users
+    this.socket.on('connected-users', (users: string[]) => {
+      console.log('Connected users:', users);
+    });
+    
+    // Listen for user-joined broadcast
+    this.socket.on('user-joined', (data: string) => console.log('🔔', data));
+
+    // User disconnecting
     this.socket.on('disconnect', () => console.log('Disconnected from WebSocket.'));
   }
 
