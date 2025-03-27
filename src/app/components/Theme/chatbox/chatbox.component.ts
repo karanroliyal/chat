@@ -1,4 +1,4 @@
-import { Component , OnInit } from '@angular/core';
+import { Component , ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SocketService } from '../../../services/socket.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -10,23 +10,32 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class ChatboxComponent implements OnInit{
 
+  @ViewChild('messageContainer') messageContainer!: ElementRef;
+
   messages :{text:string , isMine: boolean}[] = [];
 
   constructor(private socket: SocketService){}
 
   ngOnInit(): void {
-    // this.socket.connect();
     this.socket.onMessage((data:string)=>{
-      console.log('Received from server:', data);
       this.messages.push({text:data , isMine:false})
+      this.scrollToBottom();
     })
-    
+    this.socket.socket.on('user-joined',(newUser)=>{
+      this.messages.push({text:`Joined : ${newUser}` , isMine:false})
+    })
+    // Listening for user disconnect events
+    this.socket.socket.on('user-disconnect', (disconnectedUserId: string) => {
+      this.messages.push({text:`left : ${disconnectedUserId}` , isMine:false})
+    });
+
   }
 
   sendMessage(message:string){
     if(this.chatForm.valid && message.trim() != ''){
       this.messages.push({text:message , isMine:true})
       this.socket.sendMessage(message)
+      this.scrollToBottom();
     }
   }
 
@@ -37,5 +46,13 @@ export class ChatboxComponent implements OnInit{
   chatForm  = new FormGroup({
     message: new FormControl('',[Validators.required,Validators.min(1)])
   })
+
+  scrollToBottom() {
+    setTimeout(() => {
+      if (this.messageContainer) {
+        this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+      }
+    }, 100);
+  }
 
 }

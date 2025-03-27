@@ -20,28 +20,29 @@ module.exports = createRouter((router) => {
         res.status(201).json({ name: 'karan rawat' });
     })
 
-    // Track connected users
+
     const connectedUsers = {};
-
+    
     io.on('connection', (socket) => {
+
+        connectedUsers[socket.id] = `User-${socket.id.slice(-2)}`;
+
         console.log('user connected', socket.id);
-        // Add new user to the list
-        connectedUsers[socket.id] = `User-${socket.id.slice(-4)}`;
 
-        // Notify existing users about the new user
-        socket.broadcast.emit('user-joined', `${connectedUsers[socket.id]} joined the chat`);
-
-        // Send the list of connected users to the newly joined user
+        // Disconnected users
+        socket.on('disconnect', function () {
+            delete connectedUsers[socket.id];
+            io.emit('user-disconnect',`User-${socket.id.slice(-2)}`)
+        });
+        socket.broadcast.emit('user-joined', `User-${socket.id.slice(-2)}`);
         socket.emit('connected-users', Object.values(connectedUsers));
 
-        socket.on('disconnect', function () {
-            console.log('user disconnected', socket.id);
-        });
         
         socket.on('message', (msg) => {
             console.log('user sended this message : ', msg)
-            socket.broadcast.emit('message', msg);
+            socket.broadcast.emit('message', `User-${socket.id.slice(-2)}: ${msg}`);
         })
+
     })
 
     server.listen(8000, () => console.log('Socket Server running on http://localhost:8000'));

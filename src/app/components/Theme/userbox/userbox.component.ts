@@ -19,21 +19,26 @@ export class UserboxComponent implements OnInit{
 
   constructor(private GS: globalRouting , private socket: SocketService){}
 
-  users: user[] = [{userId:''}]
+  users: user[] = []
 
   ngOnInit(): void {
     this.socket.connect();
-    // this.socket.socket.on('user-joined' , (data:string)=>{
-    //   this.users.unshift({userId:data})
-    // })
-    this.socket.socket.on('connected-users', (users: string[]) => {
-      users.forEach((ele)=>{
-        this.users.push({userId:ele})
+    this.socket.socket.on('connected-users', (connectedUsers: string[]) => {
+      connectedUsers.forEach((ele)=>{
+        this.users.unshift({userId:ele});
       })
     });
-    console.log(this.users)
+    this.socket.socket.on('user-joined', (recentConnectedUser: string) => {
+        this.users.unshift({userId:recentConnectedUser});
+    });
+    
+    this.socket.socket.on('user-disconnected', (disconnectedUsers: string)=>{
+      console.log(disconnectedUsers , 'disconnected user ')
+    });
+    // Listening for user disconnect events
+    this.socket.socket.on('user-disconnect', (disconnectedUserId: string) => {
+      this.users = this.users.filter((ele)=>ele.userId != disconnectedUserId)
+    });
   }
-
-
 
 }

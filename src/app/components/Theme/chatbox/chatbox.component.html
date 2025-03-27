@@ -1,32 +1,31 @@
-<div class="pt-2 pb-2 px-2 border mt-2 mb-2 mx-2 rounded h-100 d-flex flex-column justify-content-end px-3 overflow-y: auto">
+<div class="pt-2 pb-2 px-2 border mt-2 mb-2 mx-2 rounded h-100 d-flex flex-column justify-content-end px-3 ">
 
-    <!-- @if(false){
-        <div class="d-flex justify-content-center align-items-center h-100 flex-column">
-            <h1><i class="bi bi-folder-x"></i></h1>
-            <h3>Chat box is empty</h3>
-        </div>
-    } -->
-
-    @for(msg of messages ;track  $index){
+    <div #messageContainer class="d-flex flex-column overflow-y-auto px-2">
+        @for(msg of messages ;track $index){
         @if(!msg.isMine){
-            <div class="d-inline me-auto rounded mb-3 px-2 pt-2 pb-2 bg-primary text-white">
-                {{msg.text}}
-            </div>
+        <div class="d-inline me-auto rounded mb-3 px-2 pt-2 pb-2 bg-primary text-white">
+            {{msg.text}}
+        </div>
         }@else {
-            <div class="d-inline ms-auto rounded mb-3 px-2 pt-2 pb-2 bg-secondary text-white">
-                {{msg.text}}
-            </div>
+        <div class="d-inline ms-auto rounded mb-3 px-2 pt-2 pb-2 bg-secondary text-white">
+            {{msg.text}}
+        </div>
         }
-    }
+        }
+    </div>
+
 
     <div>
         <div>
             <form [formGroup]="chatForm" class="input-group">
-                <input #message formControlName="message" type="text" class="form-control" placeholder="Enter your message here...." />
-                <button type="submit" class="input-group-text btn btn-primary" (click)="sendMessage(message.value);clearInput(message)"><i class="bi bi-send"></i></button>
+                <input #message formControlName="message" type="text" class="form-control"
+                    placeholder="Enter your message here...." />
+                <button type="submit" class="input-group-text btn btn-primary"
+                    (click)="sendMessage(message.value);clearInput(message)"><i class="bi bi-send"></i></button>
             </form>
 
         </div>
     </div>
 
 </div>
+

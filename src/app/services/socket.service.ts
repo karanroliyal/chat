@@ -20,17 +20,10 @@ export class SocketService {
     this.socket = io('http://localhost:8000', {
       path: '/sock' // Use custom path defined on the backend
     });
+
     this.socket.on('connect', () => console.log('Connected to WebSocket!'));
 
-    // Handle the list of connected users
-    this.socket.on('connected-users', (users: string[]) => {
-      console.log('Connected users:', users);
-    });
-    
-    // Listen for user-joined broadcast
-    this.socket.on('user-joined', (data: string) => console.log('🔔', data));
-
-    // User disconnecting
+    // Disconnect
     this.socket.on('disconnect', () => console.log('Disconnected from WebSocket.'));
   }
 
@@ -42,7 +35,13 @@ export class SocketService {
     this.socket.on('message', callback);
   }
 
+  deleteUser(callback: (data: string) => void): void {
+    this.socket.on('disconnect', callback);
+  }
+
+
   disconnect(): void {
     if (this.socket) this.socket.disconnect();
   }
+
 }
